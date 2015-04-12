@@ -31,11 +31,12 @@ def search():
     return oauth_request(URL)
 
 if __name__ == "__main__":
-    f = codecs.open('test.xml', mode = 'w')
+    f = codecs.open('tweet_data.xml', mode = 'w')
     w = XMLWriter(f)
 
     dictionary = json.loads(search())
 
+    w.start('root')
 
     for n in range(0,len(dictionary["statuses"])):
         entry = dictionary["statuses"][n]
@@ -43,9 +44,9 @@ if __name__ == "__main__":
             w.start('dataelement')
             w.element('text', "Status: " + entry["text"].encode('ascii','ignore') + '\n')
             w.start('geodata')
-            w.element('lattitude',str(entry["geo"]["coordinates"][0]))
+            w.element('latitude',str(entry["geo"]["coordinates"][0]))
             w.element('longitude',str(entry["geo"]["coordinates"][1]))
             w.end('geodata')
             w.end('dataelement')
 
-        
+    w.end('root')    
